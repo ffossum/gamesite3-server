@@ -1,5 +1,0 @@
-[include]
-./flow-typed
-
-[ignore]
-.*/node_modules/.*
