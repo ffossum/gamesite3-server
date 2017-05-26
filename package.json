@@ -9,6 +9,8 @@
     "test": "npm run eslint && prettier --list-different --single-quote --trailing-comma es5 \"*.js\" \"src/**/*.js\""
   },
   "dependencies": {
+    "deepstream.io-client-js": "^2.1.5",
+    "dotenv-safe": "^4.0.4",
     "koa": "^2.2.0",
     "koa-router": "^7.2.0"
   },
