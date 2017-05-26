@@ -1,6 +1,7 @@
 /* @flow */
 const app = require('./src/app');
 const deepstream = require('deepstream.io-client-js');
+const winston = require('winston');
 
 require('dotenv-safe').load();
 
@@ -16,3 +17,4 @@ deepstream(deepstreamHost).login({
 });
 
 app.listen(port);
+winston.info(`Server listening on port ${port}`);

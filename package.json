@@ -12,7 +12,8 @@
     "deepstream.io-client-js": "^2.1.5",
     "dotenv-safe": "^4.0.4",
     "koa": "^2.2.0",
-    "koa-router": "^7.2.0"
+    "koa-router": "^7.2.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
