@@ -1,0 +1,12 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:require-path-exists/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 8
+  }
+}
