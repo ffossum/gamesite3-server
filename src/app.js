@@ -1,8 +1,11 @@
 const Koa = require('koa');
 const Router = require('koa-router');
+const apiRouter = require('./api/apiRouter');
 
 const app = new Koa();
 const router = new Router();
+
+router.use('/api', apiRouter.routes(), apiRouter.allowedMethods());
 
 router.get('*', ctx => {
   ctx.body = `<!doctype html>
@@ -21,7 +24,6 @@ router.get('*', ctx => {
 `;
 });
 
-app.use(router.routes());
-app.use(router.allowedMethods());
+app.use(router.routes(), router.allowedMethods());
 
 module.exports = app;
