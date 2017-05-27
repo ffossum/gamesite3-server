@@ -16,8 +16,10 @@
     "dotenv-safe": "^4.0.4",
     "jsonwebtoken": "^7.4.1",
     "koa": "^2.2.0",
+    "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.2.0",
     "shortid": "^2.2.8",
+    "validator": "^7.0.0",
     "winston": "^2.3.1"
   },
   "devDependencies": {
