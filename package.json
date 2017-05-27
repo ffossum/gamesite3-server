@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "coverage": "jest --coverage --collectCoverageFrom=\"src/**/*.js\"",
+    "jest": "jest",
     "eslint": "eslint *.js src/",
     "prettier": "prettier --write --single-quote --trailing-comma es5 \"*.js\" \"src/**/*.js\"",
-    "test": "npm run eslint && prettier --list-different --single-quote --trailing-comma es5 \"*.js\" \"src/**/*.js\""
+    "test": "npm run eslint && prettier --list-different --single-quote --trailing-comma es5 \"*.js\" \"src/**/*.js\" && npm run coverage"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
@@ -21,6 +23,7 @@
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-plugin-require-path-exists": "^1.1.7",
+    "jest": "^20.0.4",
     "prettier": "^1.3.1"
   }
 }
