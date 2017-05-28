@@ -2,6 +2,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const jwt = require('koa-jwt');
 const apiRouter = require('./api/apiRouter');
+const { expireJwtCookie } = require('./api/jwtCookie');
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -22,8 +23,15 @@ router.get(
   }
 );
 
-router.get('*', ctx => {
-  ctx.body = `<!doctype html>
+router.get('/logout', expireJwtCookie(), ctx => {
+  ctx.redirect('back');
+});
+
+router.get(
+  '*',
+  jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
+  ctx => {
+    ctx.body = `<!doctype html>
 
 <html lang="en">
 <head>
@@ -37,7 +45,8 @@ router.get('*', ctx => {
 </body>
 </html>
 `;
-});
+  }
+);
 
 app.use(router.routes(), router.allowedMethods());
 
