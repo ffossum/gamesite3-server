@@ -12,7 +12,7 @@ const router = new Router();
 router.use('/api', apiRouter.routes(), apiRouter.allowedMethods());
 
 router.get(
-  '/registration',
+  /\/(registration|login)\/?$/,
   jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
   async (ctx, next) => {
     if (ctx.state.user) {
