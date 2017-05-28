@@ -17,8 +17,8 @@ function isValidPassword(password) {
   return typeof password === 'string' && password.length >= 8;
 }
 
-function registrationValidation() {
-  return async (ctx, next) => {
+module.exports = function() {
+  return async function registrationValidation(ctx, next) {
     const { username, email, password, repeatPassword } = ctx.request.body;
 
     if (
@@ -32,6 +32,4 @@ function registrationValidation() {
       await next();
     }
   };
-}
-
-module.exports = registrationValidation;
+};
