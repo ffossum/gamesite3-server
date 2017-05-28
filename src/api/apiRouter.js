@@ -14,7 +14,7 @@ apiRouter.post(
   bodyParser(),
   registrationValidation(),
   async (ctx, next) => {
-    const { id } = addUser(ctx.request.body);
+    const { id } = await addUser(ctx.request.body);
     ctx.state.user = {
       id,
       username: ctx.request.body.username,
