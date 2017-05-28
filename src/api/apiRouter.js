@@ -14,12 +14,15 @@ apiRouter.post(
   bodyParser(),
   registrationValidation(),
   async (ctx, next) => {
-    ctx.state.user = { id: shortid.generate() };
+    ctx.state.user = {
+      id: shortid.generate(),
+      username: ctx.request.body.username,
+    };
     await next();
   },
   refreshJwtCookie(jwtSecret),
   ctx => {
-    ctx.body = ctx.state.user;
+    ctx.body = { id: ctx.state.user.id };
     ctx.status = 201;
   }
 );

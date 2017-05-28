@@ -31,12 +31,23 @@ router.get(
   '*',
   jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
   ctx => {
+    const user = ctx.state.user && {
+      id: ctx.state.user.id,
+      username: ctx.state.user.username,
+    };
+
+    const userTag = user
+      ? `<script defer>window.__USER__ = ${JSON.stringify(user)};</script>`
+      : '';
+
     ctx.body = `<!doctype html>
 
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Gamesite 3</title>
+
+  ${userTag}
   <script src="//localhost:8080/scripts/bundle.js" defer></script>
 </head>
 

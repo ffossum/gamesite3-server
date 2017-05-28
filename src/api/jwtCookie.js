@@ -10,9 +10,16 @@ function getExpirationDate() {
 function refreshJwtCookie(jwtSecret) {
   return async (ctx, next) => {
     if (ctx.state.user) {
-      const jwt = await signJwt(ctx.state.user, jwtSecret, {
-        expiresIn: '7d',
-      });
+      const jwt = await signJwt(
+        {
+          id: ctx.state.user.id,
+          username: ctx.state.user.username,
+        },
+        jwtSecret,
+        {
+          expiresIn: '7d',
+        }
+      );
 
       ctx.cookies.set(JWT_COOKIE, jwt, {
         httpOnly: true,
