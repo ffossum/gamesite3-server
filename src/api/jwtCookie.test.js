@@ -1,5 +1,5 @@
 /* eslint-env jest */
-const { refreshJwtCookie } = require('./jwtCookie');
+const { refreshJwtCookie, expireJwtCookie } = require('./jwtCookie');
 const { verifyJwt } = require('../util/jwt');
 
 const jwtSecret = 'jwt secret';
@@ -38,6 +38,20 @@ describe('jwt cookie middleware', () => {
       await middleware(ctx, next);
 
       expect(ctx.cookies.set).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('expireJwtCookie', () => {
+    test('sets jwt cookie to expire on a date in the past', async () => {
+      const middleware = expireJwtCookie();
+      const next = async () => {};
+
+      const now = new Date();
+      await middleware(ctx, next);
+
+      expect(ctx.cookies.set).toHaveBeenCalled();
+      const cookieOptions = ctx.cookies.set.mock.calls[0][2];
+      expect(cookieOptions.expires < now).toBe(true);
     });
   });
 });
