@@ -3,7 +3,7 @@ const bodyParser = require('koa-bodyparser');
 const { refreshJwtCookie } = require('./jwtCookie');
 const registrationValidation = require('./validation/registrationValidation');
 const loginValidation = require('./validation/loginValidation');
-const { addUser } = require('../db/users');
+const userDb = require('../db/users');
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -14,7 +14,7 @@ apiRouter.post(
   bodyParser(),
   registrationValidation(),
   async (ctx, next) => {
-    const { id } = await addUser(ctx.request.body);
+    const { id } = await userDb.addUser(ctx.request.body);
     ctx.state.user = {
       id,
       username: ctx.request.body.username,
@@ -34,7 +34,7 @@ apiRouter.post(
 apiRouter.post(
   '/login',
   bodyParser(),
-  loginValidation(),
+  loginValidation(userDb),
   refreshJwtCookie(jwtSecret),
   ctx => {
     ctx.body = {

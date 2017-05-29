@@ -1,10 +1,8 @@
-const { getUserByEmail } = require('../../db/users');
-
-module.exports = function() {
+module.exports = function(userDb) {
   return async function loginValidation(ctx, next) {
     const { email, password } = ctx.request.body;
 
-    const user = await getUserByEmail(email);
+    const user = await userDb.getUserByEmail(email);
 
     if (!user || user.password !== password) {
       // TODO: hashed passwords
