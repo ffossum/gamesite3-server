@@ -11,7 +11,6 @@
     "test": "npm run eslint && prettier --list-different --single-quote --trailing-comma es5 \"*.js\" \"src/**/*.js\" && npm run coverage"
   },
   "dependencies": {
-    "bluebird": "^3.5.0",
     "deepstream.io-client-js": "^2.1.5",
     "dotenv-safe": "^4.0.4",
     "jsonwebtoken": "^7.4.1",

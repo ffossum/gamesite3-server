@@ -1,4 +1,4 @@
-const { promisify } = require('bluebird');
+const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
