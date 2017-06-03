@@ -10,10 +10,12 @@ const deepstreamPassword = process.env.DEEPSTREAM_PASSWORD;
 
 const port = process.env.SERVER_PORT;
 
-deepstream(deepstreamHost).login({
+const deepstreamClient = deepstream(deepstreamHost).login({
   username: deepstreamUsername,
   password: deepstreamPassword,
 });
+
+deepstreamClient.on('error', winston.error);
 
 app.listen(port);
 winston.info(`Server listening on port ${port}`);
