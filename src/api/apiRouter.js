@@ -9,6 +9,18 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const apiRouter = new Router();
 
+apiRouter.get('/users', async ctx => {
+  let userIds = ctx.request.query.id || [];
+  if (typeof userIds === 'string') {
+    userIds = [userIds];
+  }
+
+  let users = await userDb.getUsersById(userIds);
+  users = users.map(user => userDb.toPublicUserData(user));
+
+  ctx.body = users;
+});
+
 apiRouter.post(
   '/registration',
   bodyParser(),
