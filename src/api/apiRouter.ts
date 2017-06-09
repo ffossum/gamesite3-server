@@ -64,4 +64,4 @@ apiRouter.get('*', ctx => {
   ctx.status = 404;
 });
 
-module.exports = apiRouter;
+export default apiRouter;
