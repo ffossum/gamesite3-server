@@ -1,5 +1,4 @@
-/* eslint-env jest */
-const registrationValidation = require('./registrationValidation');
+import registrationValidation from './registrationValidation';
 
 describe('registration validation', () => {
   let ctx;

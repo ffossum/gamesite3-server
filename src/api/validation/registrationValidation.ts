@@ -1,6 +1,7 @@
-const { isEmail, isAlphanumeric } = require('validator');
+import { Context } from 'koa';
+import { isEmail, isAlphanumeric } from 'validator';
 
-function isValidUsername(username) {
+function isValidUsername(username: any) {
   return (
     typeof username === 'string' &&
     isAlphanumeric(username) &&
@@ -9,16 +10,19 @@ function isValidUsername(username) {
   );
 }
 
-function isValidEmail(email) {
+function isValidEmail(email: any) {
   return typeof email === 'string' && isEmail(email);
 }
 
-function isValidPassword(password) {
+function isValidPassword(password: any) {
   return typeof password === 'string' && password.length >= 8;
 }
 
-module.exports = function() {
-  return async function registrationValidation(ctx, next) {
+export default function() {
+  return async function registrationValidation(
+    ctx: Context,
+    next: () => Promise<any>
+  ) {
     const { username, email, password, repeatPassword } = ctx.request.body;
 
     if (
@@ -32,4 +36,4 @@ module.exports = function() {
       await next();
     }
   };
-};
+}

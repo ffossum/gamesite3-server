@@ -1,6 +1,5 @@
-/* eslint-env jest */
-const { refreshJwtCookie, expireJwtCookie } = require('./jwtCookie');
-const { verifyJwt } = require('../util/jwt');
+import { refreshJwtCookie, expireJwtCookie } from './jwtCookie';
+import { verifyJwt } from '../util/jwt';
 
 const jwtSecret = 'jwt secret';
 
