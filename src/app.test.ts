@@ -1,6 +1,5 @@
-/* eslint-env jest */
-const request = require('supertest');
-const app = require('./app');
+import * as request from 'supertest';
+import app from './app';
 
 describe('GET / (unauthenticated)', () => {
   test('responds with html', async () => {

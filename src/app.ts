@@ -1,6 +1,6 @@
-const Koa = require('koa');
-const Router = require('koa-router');
-const jwt = require('koa-jwt');
+import * as Koa from 'koa';
+import * as Router from 'koa-router';
+import * as jwt from 'koa-jwt';
 const apiRouter = require('./api/apiRouter');
 const { expireJwtCookie } = require('./api/jwtCookie');
 
@@ -14,7 +14,7 @@ router.use('/api', apiRouter.routes(), apiRouter.allowedMethods());
 router.get(
   /\/(registration|login)\/?$/,
   jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
-  async (ctx, next) => {
+  async (ctx: Koa.Context, next: () => Promise<any>) => {
     if (ctx.state.user) {
       ctx.redirect('/');
     }
@@ -23,14 +23,14 @@ router.get(
   }
 );
 
-router.get('/logout', expireJwtCookie(), ctx => {
+router.get('/logout', expireJwtCookie(), (ctx: Koa.Context) => {
   ctx.redirect('back');
 });
 
 router.get(
   '*',
   jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
-  ctx => {
+  (ctx: Koa.Context) => {
     const user = ctx.state.user && {
       id: ctx.state.user.id,
       username: ctx.state.user.username,
@@ -59,6 +59,7 @@ router.get(
   }
 );
 
-app.use(router.routes(), router.allowedMethods());
+app.use(router.routes());
+app.use(router.allowedMethods());
 
-module.exports = app;
+export default app;

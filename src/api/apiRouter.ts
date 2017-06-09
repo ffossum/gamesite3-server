@@ -1,9 +1,10 @@
-const Router = require('koa-router');
-const bodyParser = require('koa-bodyparser');
-const { refreshJwtCookie } = require('./jwtCookie');
-const registrationValidation = require('./validation/registrationValidation');
-const loginValidation = require('./validation/loginValidation');
-const userDb = require('../db/users');
+import * as Router from 'koa-router';
+import * as bodyParser from 'koa-bodyparser';
+
+import { refreshJwtCookie } from './jwtCookie';
+import registrationValidation from './validation/registrationValidation';
+import loginValidation from './validation/loginValidation';
+import * as userDb from '../db/users';
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -15,8 +16,10 @@ apiRouter.get('/users', async ctx => {
     userIds = [userIds];
   }
 
-  let users = await userDb.getUsersById(userIds);
-  users = users.map(user => userDb.toPublicUserData(user));
+  const users = await userDb.getUsersById(userIds);
+  const publicUserData = users
+    .filter(user => user)
+    .map(user => user && userDb.toPublicUserData(user));
 
   ctx.body = users;
 });

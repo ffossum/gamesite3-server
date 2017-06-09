@@ -1,5 +1,4 @@
-/* eslint-env jest */
-const loginValidation = require('./loginValidation');
+import loginValidation from './loginValidation';
 
 describe('login validation middleware', () => {
   let ctx;
@@ -22,7 +21,7 @@ describe('login validation middleware', () => {
 
   test('returns 401 if user is not found', async () => {
     const userDb = {
-      getUserByEmail: async () => {},
+      getUserByEmail: async () => undefined,
     };
     const middleware = loginValidation(userDb);
     await middleware(ctx, next);

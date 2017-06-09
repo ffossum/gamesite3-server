@@ -1,4 +1,20 @@
-const shortid = require('shortid');
+import * as shortid from 'shortid';
+
+type UserId = string;
+type Email = string;
+type Username = string;
+
+export interface User {
+  id: UserId;
+  username: Username;
+  email: Email;
+  password: string;
+}
+
+export interface PublicUserData {
+  id: UserId;
+  username: Username;
+}
 
 const qwer = {
   id: 'qwer-id',
@@ -21,9 +37,9 @@ const zxcv = {
   password: 'zxcvzxcv',
 };
 
-const usersById = new Map();
-const usersByEmail = new Map();
-const usersByName = new Map();
+const usersById = new Map<UserId, User>();
+const usersByEmail = new Map<Email, User>();
+const usersByName = new Map<Username, User>();
 
 [qwer, asdf, zxcv].forEach(user => {
   usersById.set(user.id, user);
@@ -31,7 +47,12 @@ const usersByName = new Map();
   usersByName.set(user.username, user);
 });
 
-async function addUser({ username, email, password }) {
+interface AddUserData {
+  username: Username;
+  email: Email;
+  password: string;
+}
+export async function addUser({ username, email, password }: AddUserData) {
   const id = shortid.generate();
   const user = {
     id,
@@ -47,29 +68,21 @@ async function addUser({ username, email, password }) {
   return { id };
 }
 
-async function getUserById(id) {
+export async function getUserById(id: UserId) {
   return usersById.get(id);
 }
 
-async function getUsersById(ids) {
+export async function getUsersById(ids: UserId[]) {
   return ids.map(id => usersById.get(id));
 }
 
-async function getUserByEmail(email) {
+export async function getUserByEmail(email: Email) {
   return usersByEmail.get(email);
 }
 
-function toPublicUserData(user) {
+export function toPublicUserData(user: User): PublicUserData {
   return {
     id: user.id,
     username: user.username,
   };
 }
-
-module.exports = {
-  addUser,
-  getUserById,
-  getUsersById,
-  getUserByEmail,
-  toPublicUserData,
-};

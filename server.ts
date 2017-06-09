@@ -1,8 +1,8 @@
 require('dotenv-safe').load();
 
-const app = require('./src/app');
-const deepstream = require('deepstream.io-client-js');
-const winston = require('winston');
+import app from './src/app';
+import * as winston from 'winston';
+import * as deepstream from 'deepstream.io-client-js';
 
 const deepstreamHost = process.env.DEEPSTREAM_HOST;
 const deepstreamUsername = process.env.DEEPSTREAM_USERNAME;

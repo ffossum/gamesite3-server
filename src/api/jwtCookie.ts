@@ -1,4 +1,5 @@
-const { signJwt } = require('../util/jwt');
+import { Context } from 'koa';
+import { signJwt } from '../util/jwt';
 
 const JWT_COOKIE = 'jwt';
 const EXPIRATION_AGE = 604800000; // 7 days
@@ -7,8 +8,8 @@ function getExpirationDate() {
   return new Date(Number(new Date()) + EXPIRATION_AGE);
 }
 
-function refreshJwtCookie(jwtSecret) {
-  return async (ctx, next) => {
+export function refreshJwtCookie(jwtSecret: string) {
+  return async (ctx: Context, next: () => Promise<any>) => {
     if (ctx.state.user) {
       const jwt = await signJwt(
         {
@@ -34,9 +35,9 @@ function lastWeek() {
   return new Date(Number(new Date()) - EXPIRATION_AGE);
 }
 
-function expireJwtCookie() {
-  return async (ctx, next) => {
-    ctx.cookies.set(JWT_COOKIE, false, {
+export function expireJwtCookie() {
+  return async (ctx: Context, next: () => Promise<any>) => {
+    ctx.cookies.set(JWT_COOKIE, undefined, {
       httpOnly: true,
       expires: lastWeek(),
     });
@@ -44,8 +45,3 @@ function expireJwtCookie() {
     await next();
   };
 }
-
-module.exports = {
-  refreshJwtCookie,
-  expireJwtCookie,
-};
