@@ -1,8 +1,8 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import * as jwt from 'koa-jwt';
-const apiRouter = require('./api/apiRouter');
-const { expireJwtCookie } = require('./api/jwtCookie');
+import apiRouter from './api/apiRouter';
+import { expireJwtCookie } from './api/jwtCookie';
 
 const jwtSecret = process.env.JWT_SECRET;
 
