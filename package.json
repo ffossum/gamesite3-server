@@ -9,7 +9,7 @@
     "prettycheck": "prettier --parser typescript --list-different --single-quote --trailing-comma es5 \"*.[jt]s\" \"src/**/*.[jt]s\"",
     "typecheck": "tsc --noEmit",
     "test": "yarn typecheck && yarn prettycheck && yarn coverage",
-    "start": "ts-node -F server.ts"
+    "start": "ts-node --fast server.ts"
   },
   "jest": {
     "moduleFileExtensions": [
