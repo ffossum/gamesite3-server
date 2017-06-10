@@ -1,25 +1,25 @@
-import { refreshJwtCookie, expireJwtCookie } from './jwtCookie';
-import { verifyJwt } from '../util/jwt';
+import { verifyJwt } from "../util/jwt";
+import { expireJwtCookie, refreshJwtCookie } from "./jwtCookie";
 
-const jwtSecret = 'jwt secret';
+const jwtSecret = "jwt secret";
 
-describe('jwt cookie middleware', () => {
+describe("jwt cookie middleware", () => {
   let ctx;
   beforeEach(() => {
     ctx = {
-      state: {},
       cookies: {
         set: jest.fn(),
       },
+      state: {},
     };
   });
 
-  describe('refreshJwtCookie', () => {
-    test('sets a jwt cookie if user is authenticated', async () => {
+  describe("refreshJwtCookie", () => {
+    test("sets a jwt cookie if user is authenticated", async () => {
       const middleware = refreshJwtCookie(jwtSecret);
-      const next = async () => {};
+      const next = async () => undefined;
 
-      ctx.state.user = { id: 'user id' };
+      ctx.state.user = { id: "user id" };
 
       await middleware(ctx, next);
       expect(ctx.cookies.set).toHaveBeenCalledTimes(1);
@@ -27,12 +27,12 @@ describe('jwt cookie middleware', () => {
       const token = ctx.cookies.set.mock.calls[0][1];
       const decoded = await verifyJwt(token, jwtSecret);
 
-      expect(decoded.id).toBe('user id');
+      expect(decoded.id).toBe("user id");
     });
 
-    test('does nothing if user is not authenticated', async () => {
+    test("does nothing if user is not authenticated", async () => {
       const middleware = refreshJwtCookie(jwtSecret);
-      const next = async () => {};
+      const next = async () => undefined;
 
       await middleware(ctx, next);
 
@@ -40,10 +40,10 @@ describe('jwt cookie middleware', () => {
     });
   });
 
-  describe('expireJwtCookie', () => {
-    test('sets jwt cookie to expire on a date in the past', async () => {
+  describe("expireJwtCookie", () => {
+    test("sets jwt cookie to expire on a date in the past", async () => {
       const middleware = expireJwtCookie();
-      const next = async () => {};
+      const next = async () => undefined;
 
       const now = new Date();
       await middleware(ctx, next);

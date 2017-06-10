@@ -1,35 +1,35 @@
-import * as Koa from 'koa';
-import * as Router from 'koa-router';
-import * as jwt from 'koa-jwt';
-import apiRouter from './api/apiRouter';
-import { expireJwtCookie } from './api/jwtCookie';
+import * as Koa from "koa";
+import * as jwt from "koa-jwt";
+import * as Router from "koa-router";
+import apiRouter from "./api/apiRouter";
+import { expireJwtCookie } from "./api/jwtCookie";
 
 const jwtSecret = process.env.JWT_SECRET;
 
 const app = new Koa();
 const router = new Router();
 
-router.use('/api', apiRouter.routes(), apiRouter.allowedMethods());
+router.use("/api", apiRouter.routes(), apiRouter.allowedMethods());
 
 router.get(
   /\/(registration|login)\/?$/,
-  jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
+  jwt({ secret: jwtSecret, cookie: "jwt", passthrough: true }),
   async (ctx: Koa.Context, next: () => Promise<any>) => {
     if (ctx.state.user) {
-      ctx.redirect('/');
+      ctx.redirect("/");
     }
 
     await next();
-  }
+  },
 );
 
-router.get('/logout', expireJwtCookie(), (ctx: Koa.Context) => {
-  ctx.redirect('back');
+router.get("/logout", expireJwtCookie(), (ctx: Koa.Context) => {
+  ctx.redirect("back");
 });
 
 router.get(
-  '*',
-  jwt({ secret: jwtSecret, cookie: 'jwt', passthrough: true }),
+  "*",
+  jwt({ secret: jwtSecret, cookie: "jwt", passthrough: true }),
   (ctx: Koa.Context) => {
     const user = ctx.state.user && {
       id: ctx.state.user.id,
@@ -38,7 +38,7 @@ router.get(
 
     const userTag = user
       ? `<script defer>window.__USER__ = ${JSON.stringify(user)};</script>`
-      : '';
+      : "";
 
     ctx.body = `<!doctype html>
 
@@ -56,7 +56,7 @@ router.get(
 </body>
 </html>
 `;
-  }
+  },
 );
 
 app.use(router.routes());

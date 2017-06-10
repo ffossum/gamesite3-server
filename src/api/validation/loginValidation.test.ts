@@ -1,6 +1,6 @@
-import loginValidation from './loginValidation';
+import loginValidation from "./loginValidation";
 
-describe('login validation middleware', () => {
+describe("login validation middleware", () => {
   let ctx;
   let next;
 
@@ -8,8 +8,8 @@ describe('login validation middleware', () => {
     ctx = {
       request: {
         body: {
-          email: 'bob@test.com',
-          password: 'bobisthebest',
+          email: "bob@test.com",
+          password: "bobisthebest",
         },
       },
       state: {},
@@ -19,7 +19,7 @@ describe('login validation middleware', () => {
     };
   });
 
-  test('returns 401 if user is not found', async () => {
+  test("returns 401 if user is not found", async () => {
     const userDb = {
       getUserByEmail: async () => undefined,
     };
@@ -29,12 +29,12 @@ describe('login validation middleware', () => {
     expect(ctx.status).toBe(401);
   });
 
-  test('return 401 if password is incorrect', async () => {
+  test("return 401 if password is incorrect", async () => {
     const userDb = {
       getUserByEmail: async () => ({
-        id: 'userid',
-        username: 'bob',
-        password: 'bobsucks',
+        id: "userid",
+        password: "bobsucks",
+        username: "bob",
       }),
     };
     const middleware = loginValidation(userDb);
@@ -43,12 +43,12 @@ describe('login validation middleware', () => {
     expect(ctx.status).toBe(401);
   });
 
-  test('authenticates user and passes through if login is valid', async () => {
+  test("authenticates user and passes through if login is valid", async () => {
     const userDb = {
       getUserByEmail: async () => ({
-        id: 'userid',
-        username: 'bob',
-        password: 'bobisthebest',
+        id: "userid",
+        password: "bobisthebest",
+        username: "bob",
       }),
     };
 
@@ -56,8 +56,8 @@ describe('login validation middleware', () => {
     await middleware(ctx, next);
 
     expect(ctx.state.user).toEqual({
-      id: 'userid',
-      username: 'bob',
+      id: "userid",
+      username: "bob",
     });
     expect(ctx.status).toBe(200);
   });

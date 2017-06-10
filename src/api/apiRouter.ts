@@ -1,18 +1,18 @@
-import * as Router from 'koa-router';
-import * as bodyParser from 'koa-bodyparser';
+import * as bodyParser from "koa-bodyparser";
+import * as Router from "koa-router";
 
-import { refreshJwtCookie } from './jwtCookie';
-import registrationValidation from './validation/registrationValidation';
-import loginValidation from './validation/loginValidation';
-import * as userDb from '../db/users';
+import * as userDb from "../db/users";
+import { refreshJwtCookie } from "./jwtCookie";
+import loginValidation from "./validation/loginValidation";
+import registrationValidation from "./validation/registrationValidation";
 
 const jwtSecret = process.env.JWT_SECRET;
 
 const apiRouter = new Router();
 
-apiRouter.get('/users', async ctx => {
+apiRouter.get("/users", async ctx => {
   let userIds = ctx.request.query.id || [];
-  if (typeof userIds === 'string') {
+  if (typeof userIds === "string") {
     userIds = [userIds];
   }
 
@@ -25,7 +25,7 @@ apiRouter.get('/users', async ctx => {
 });
 
 apiRouter.post(
-  '/registration',
+  "/registration",
   bodyParser(),
   registrationValidation(),
   async (ctx, next) => {
@@ -43,11 +43,11 @@ apiRouter.post(
       username: ctx.state.user.username,
     };
     ctx.status = 201;
-  }
+  },
 );
 
 apiRouter.post(
-  '/login',
+  "/login",
   bodyParser(),
   loginValidation(userDb),
   refreshJwtCookie(jwtSecret),
@@ -57,10 +57,10 @@ apiRouter.post(
       username: ctx.state.user.username,
     };
     ctx.status = 200;
-  }
+  },
 );
 
-apiRouter.get('*', ctx => {
+apiRouter.get("*", ctx => {
   ctx.status = 404;
 });
 
