@@ -1,6 +1,6 @@
 import * as shortid from "shortid";
 
-type UserId = string;
+export type UserId = string;
 type Email = string;
 type Username = string;
 
