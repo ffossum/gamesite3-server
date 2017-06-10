@@ -11,7 +11,8 @@
     "lintfix": "tslint --fix server.ts \"src/**/*.[jt]s\"",
     "lintcheck": "tslint server.ts \"src/**/*.[jt]s\"",
     "test": "yarn typecheck && yarn lintcheck && yarn prettycheck && yarn coverage",
-    "start": "ts-node --fast server.ts"
+    "start": "ts-node --fast server.ts",
+    "debug": "nodemon"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -50,6 +51,7 @@
     "@types/validator": "^6.2.0",
     "@types/winston": "^2.3.3",
     "jest": "^20.0.4",
+    "nodemon": "^1.11.0",
     "prettier": "^1.4.4",
     "supertest": "^3.0.0",
     "ts-jest": "^20.0.6",

@@ -1,0 +1,6 @@
+{
+  "watch": ["server.ts", "src"],
+  "ext": "[jt]s",
+  "ignore": ["src/**/*.test.[jt]s"],
+  "exec": "ts-node --inspect server.ts"
+}
