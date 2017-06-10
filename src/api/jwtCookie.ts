@@ -1,7 +1,7 @@
-import { Context } from 'koa';
-import { signJwt } from '../util/jwt';
+import { Context } from "koa";
+import { signJwt } from "../util/jwt";
 
-const JWT_COOKIE = 'jwt';
+const JWT_COOKIE = "jwt";
 const EXPIRATION_AGE = 604800000; // 7 days
 
 function getExpirationDate() {
@@ -18,13 +18,13 @@ export function refreshJwtCookie(jwtSecret: string) {
         },
         jwtSecret,
         {
-          expiresIn: '7d',
-        }
+          expiresIn: "7d",
+        },
       );
 
       ctx.cookies.set(JWT_COOKIE, jwt, {
-        httpOnly: true,
         expires: getExpirationDate(),
+        httpOnly: true,
       });
     }
     await next();
@@ -38,8 +38,8 @@ function lastWeek() {
 export function expireJwtCookie() {
   return async (ctx: Context, next: () => Promise<any>) => {
     ctx.cookies.set(JWT_COOKIE, undefined, {
-      httpOnly: true,
       expires: lastWeek(),
+      httpOnly: true,
     });
 
     await next();

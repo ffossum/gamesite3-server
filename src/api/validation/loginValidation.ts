@@ -1,14 +1,14 @@
-import { Context } from 'koa';
-import { User, toPublicUserData } from '../../db/users';
+import { Context } from "koa";
+import { IUser, toPublicUserData } from "../../db/users";
 
-interface UserDb {
-  getUserByEmail(email: string): Promise<User | undefined>;
+interface IUserDb {
+  getUserByEmail(email: string): Promise<IUser | undefined>;
 }
 
-export default function(userDb: UserDb) {
+export default function(userDb: IUserDb) {
   return async function loginValidation(
     ctx: Context,
-    next: () => Promise<any>
+    next: () => Promise<any>,
   ) {
     const { email, password } = ctx.request.body;
 

@@ -1,45 +1,45 @@
-import * as shortid from 'shortid';
+import * as shortid from "shortid";
 
 type UserId = string;
 type Email = string;
 type Username = string;
 
-export interface User {
+export interface IUser {
   id: UserId;
   username: Username;
   email: Email;
   password: string;
 }
 
-export interface PublicUserData {
+export interface IPublicUserData {
   id: UserId;
   username: Username;
 }
 
 const qwer = {
-  id: 'qwer-id',
-  username: 'qwer',
-  email: 'qwer@qwer.com',
-  password: 'qwerqwer',
+  email: "qwer@qwer.com",
+  id: "qwer-id",
+  password: "qwerqwer",
+  username: "qwer",
 };
 
 const asdf = {
-  id: 'asdf-id',
-  username: 'asdf',
-  email: 'asdf@asdf.com',
-  password: 'asdfasdf',
+  email: "asdf@asdf.com",
+  id: "asdf-id",
+  password: "asdfasdf",
+  username: "asdf",
 };
 
 const zxcv = {
-  id: 'zxcv-id',
-  username: 'zxcv',
-  email: 'zxcv@zxcv.com',
-  password: 'zxcvzxcv',
+  email: "zxcv@zxcv.com",
+  id: "zxcv-id",
+  password: "zxcvzxcv",
+  username: "zxcv",
 };
 
-const usersById = new Map<UserId, User>();
-const usersByEmail = new Map<Email, User>();
-const usersByName = new Map<Username, User>();
+const usersById = new Map<UserId, IUser>();
+const usersByEmail = new Map<Email, IUser>();
+const usersByName = new Map<Username, IUser>();
 
 [qwer, asdf, zxcv].forEach(user => {
   usersById.set(user.id, user);
@@ -47,18 +47,18 @@ const usersByName = new Map<Username, User>();
   usersByName.set(user.username, user);
 });
 
-interface AddUserData {
+interface IAddUserData {
   username: Username;
   email: Email;
   password: string;
 }
-export async function addUser({ username, email, password }: AddUserData) {
+export async function addUser({ username, email, password }: IAddUserData) {
   const id = shortid.generate();
   const user = {
-    id,
-    username,
     email,
+    id,
     password,
+    username,
   };
 
   usersById.set(id, user);
@@ -80,7 +80,7 @@ export async function getUserByEmail(email: Email) {
   return usersByEmail.get(email);
 }
 
-export function toPublicUserData(user: User): PublicUserData {
+export function toPublicUserData(user: IUser): IPublicUserData {
   return {
     id: user.id,
     username: user.username,

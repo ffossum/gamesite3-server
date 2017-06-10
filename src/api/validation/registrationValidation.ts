@@ -1,9 +1,9 @@
-import { Context } from 'koa';
-import { isEmail, isAlphanumeric } from 'validator';
+import { Context } from "koa";
+import { isAlphanumeric, isEmail } from "validator";
 
 function isValidUsername(username: any) {
   return (
-    typeof username === 'string' &&
+    typeof username === "string" &&
     isAlphanumeric(username) &&
     username.length > 1 &&
     username.length <= 20
@@ -11,17 +11,17 @@ function isValidUsername(username: any) {
 }
 
 function isValidEmail(email: any) {
-  return typeof email === 'string' && isEmail(email);
+  return typeof email === "string" && isEmail(email);
 }
 
 function isValidPassword(password: any) {
-  return typeof password === 'string' && password.length >= 8;
+  return typeof password === "string" && password.length >= 8;
 }
 
 export default function() {
   return async function registrationValidation(
     ctx: Context,
-    next: () => Promise<any>
+    next: () => Promise<any>,
   ) {
     const { username, email, password, repeatPassword } = ctx.request.body;
 
