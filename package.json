@@ -48,7 +48,7 @@
     "@types/validator": "^6.2.0",
     "@types/winston": "^2.3.3",
     "jest": "^20.0.4",
-    "prettier": "^1.4.2",
+    "prettier": "^1.4.4",
     "supertest": "^3.0.0",
     "ts-jest": "^20.0.6"
   }
