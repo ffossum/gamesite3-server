@@ -73,7 +73,9 @@ export async function getUserById(id: UserId) {
 }
 
 export async function getUsersById(ids: UserId[]) {
-  return ids.map(id => usersById.get(id));
+  return ids
+    .map(id => usersById.get(id))
+    .filter(user => user !== undefined) as IUser[];
 }
 
 export async function getUserByEmail(email: Email) {

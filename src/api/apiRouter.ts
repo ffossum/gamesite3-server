@@ -17,11 +17,9 @@ apiRouter.get("/users", async ctx => {
   }
 
   const users = await userDb.getUsersById(userIds);
-  const publicUserData = users
-    .filter(user => user)
-    .map(user => user && userDb.toPublicUserData(user));
+  const publicUserData = users.map(user => userDb.toPublicUserData(user));
 
-  ctx.body = users;
+  ctx.body = publicUserData;
 });
 
 apiRouter.post(
