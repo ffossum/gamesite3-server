@@ -8,6 +8,7 @@ export interface IGame {
   host: UserId;
   id: GameId;
   players: UserId[];
+  status: string;
 }
 
 const gamesById = new Map<GameId, IGame>();
@@ -15,10 +16,21 @@ const gamesById = new Map<GameId, IGame>();
 export async function createGame(host: UserId): Promise<IGame> {
   const gameId = shortid.generate();
   const createdTime = new Date().toISOString();
-  return {
+
+  const game = {
     createdTime,
     host,
     id: gameId,
     players: [],
+    status: "not_started",
   };
+
+  gamesById.set(gameId, game);
+
+  return game;
+}
+
+export async function getLobbyGames(): Promise<IGame[]> {
+  const games = Array.from(gamesById.values());
+  return games.filter(game => game.status === "not_started");
 }

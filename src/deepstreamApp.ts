@@ -1,5 +1,5 @@
 import * as deepstreamIO from "deepstream.io-client-js";
-import { createGame } from "./db/games";
+import { createGame, getLobbyGames } from "./db/games";
 
 export default function(client: deepstreamIO.Client) {
   client.rpc.provide("create-game", async (data, response) => {
@@ -11,5 +11,10 @@ export default function(client: deepstreamIO.Client) {
     } catch (err) {
       response.error("error");
     }
+  });
+
+  client.rpc.provide("refresh-lobby", async (data, response) => {
+    const games = await getLobbyGames();
+    response.send(games);
   });
 }
