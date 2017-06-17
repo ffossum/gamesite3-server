@@ -21,7 +21,7 @@ export async function createGame(host: UserId): Promise<IGame> {
     createdTime,
     host,
     id: gameId,
-    players: [],
+    players: [host],
     status: "not_started",
   };
 
