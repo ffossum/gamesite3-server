@@ -1,5 +1,5 @@
 import * as deepstreamIO from "deepstream.io-client-js";
-import { addPlayer, createGame, getLobbyGames } from "./db/games";
+import { addPlayer, createGame, getLobbyGames, removePlayer } from "./db/games";
 
 export default function(client: deepstreamIO.Client) {
   client.rpc.provide("create-game", async (data, response) => {
@@ -22,21 +22,20 @@ export default function(client: deepstreamIO.Client) {
     const gameId = data.gid;
     const userId = data.uid;
 
-    const joined = await addPlayer(gameId, userId);
-    response.send(joined);
+    const game = await addPlayer(gameId, userId);
+    response.send(game);
 
-    if (joined) {
-
+    if (game) {
       client.event.emit("lobby", {
         p: {
-          id: joined.id,
-          players: joined.players,
+          id: game.id,
+          players: game.players,
         },
         t: "game-updated",
       });
 
       const channels = [
-        ...joined.players.map(playerId => "user:" + playerId),
+        ...game.players.map(playerId => "user:" + playerId),
         "spectate:" + gameId,
       ];
 
@@ -47,6 +46,39 @@ export default function(client: deepstreamIO.Client) {
             uid: userId,
           },
           t: "player-joined",
+        });
+      });
+    }
+  });
+
+  client.rpc.provide("leave-game", async (data, response) => {
+    const gameId = data.gid;
+    const userId = data.uid;
+
+    const game = await removePlayer(gameId, userId);
+    response.send(game);
+
+    if (game) {
+      client.event.emit("lobby", {
+        p: {
+          id: game.id,
+          players: game.players,
+        },
+        t: "game-updated",
+      });
+
+      const channels = [
+        ...game.players.map(playerId => "user:" + playerId),
+        "spectate:" + gameId,
+      ];
+
+      channels.forEach(channelName => {
+        client.event.emit(channelName, {
+          p: {
+            gid: gameId,
+            uid: userId,
+          },
+          t: "player-left",
         });
       });
     }
