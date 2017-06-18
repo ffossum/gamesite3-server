@@ -1,3 +1,4 @@
+import { union } from "ramda";
 import * as shortid from "shortid";
 import { UserId } from "./users";
 
@@ -28,6 +29,16 @@ export async function createGame(host: UserId): Promise<IGame> {
   gamesById.set(gameId, game);
 
   return game;
+}
+
+export async function addPlayer(gameId: GameId, userId: UserId) {
+  const game = gamesById.get(gameId);
+  if (game) {
+    game.players = union(game.players, [userId]);
+    return game;
+  }
+
+  return false;
 }
 
 export async function getLobbyGames(): Promise<IGame[]> {
