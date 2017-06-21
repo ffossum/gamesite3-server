@@ -68,6 +68,7 @@ export default function(client: deepstreamIO.Client) {
       });
 
       const channels = [
+        "user:" + userId,
         ...game.players.map(playerId => "user:" + playerId),
         "spectate:" + gameId,
       ];
