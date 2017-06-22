@@ -14,6 +14,10 @@ export interface IGame {
 
 const gamesById = new Map<GameId, IGame>();
 
+export async function getGame(gameId: GameId): Promise<IGame | null> {
+  return gamesById.get(gameId) || null;
+}
+
 export async function createGame(host: UserId): Promise<IGame> {
   const gameId = shortid.generate();
   const createdTime = new Date().toISOString();

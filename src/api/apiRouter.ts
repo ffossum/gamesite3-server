@@ -1,7 +1,9 @@
 import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";
 
+import * as gameDb from "../db/games";
 import * as userDb from "../db/users";
+
 import { refreshJwtCookie } from "./jwtCookie";
 import loginValidation from "./validation/loginValidation";
 import registrationValidation from "./validation/registrationValidation";
@@ -20,6 +22,13 @@ apiRouter.get("/users", async ctx => {
   const publicUserData = users.map(user => userDb.toPublicUserData(user));
 
   ctx.body = publicUserData;
+});
+
+apiRouter.get("/game/:gameId", async ctx => {
+  const gameId = ctx.params.gameId;
+  const game = await gameDb.getGame(gameId);
+
+  ctx.body = game;
 });
 
 apiRouter.post(
