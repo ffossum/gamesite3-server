@@ -1,10 +1,12 @@
 import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";
+import fetch from "node-fetch";
 
 import * as gameDb from "../db/games";
 import * as userDb from "../db/users";
 
 import { refreshJwtCookie } from "./jwtCookie";
+import recaptcha from "./recaptcha";
 import loginValidation from "./validation/loginValidation";
 import registrationValidation from "./validation/registrationValidation";
 
@@ -35,6 +37,7 @@ apiRouter.post(
   "/registration",
   bodyParser(),
   registrationValidation(),
+  recaptcha(process.env.RECAPTCHA_SECRET),
   async (ctx, next) => {
     const { id } = await userDb.addUser(ctx.request.body);
     ctx.state.user = {
