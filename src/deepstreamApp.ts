@@ -101,6 +101,7 @@ export default function(client: deepstreamIO.Client) {
     if (game) {
       client.event.emit("lobby", {
         p: {
+          id: gameId,
           status: game.status,
         },
         t: "game-updated",
