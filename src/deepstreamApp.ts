@@ -1,5 +1,11 @@
 import * as deepstreamIO from "deepstream.io-client-js";
-import { addPlayer, createGame, getLobbyGames, removePlayer } from "./db/games";
+import {
+  addPlayer,
+  cancelGame,
+  createGame,
+  getLobbyGames,
+  removePlayer,
+} from "./db/games";
 
 export default function(client: deepstreamIO.Client) {
   client.rpc.provide("create-game", async (data, response) => {
@@ -80,6 +86,37 @@ export default function(client: deepstreamIO.Client) {
             uid: userId,
           },
           t: "player-left",
+        });
+      });
+    }
+  });
+
+  client.rpc.provide("cancel-game", async (data, response) => {
+    const gameId = data.gid;
+    const canceledBy = data.uid;
+
+    const game = await cancelGame(gameId, canceledBy);
+    response.send(!!game);
+
+    if (game) {
+      client.event.emit("lobby", {
+        p: {
+          status: game.status,
+        },
+        t: "game-updated",
+      });
+
+      const channels = [
+        ...game.players.map(playerId => "user:" + playerId),
+        "spectate:" + gameId,
+      ];
+
+      channels.forEach(channelName => {
+        client.event.emit(channelName, {
+          p: {
+            gid: gameId,
+          },
+          t: "game-canceled",
         });
       });
     }

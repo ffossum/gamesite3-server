@@ -55,6 +55,16 @@ export async function removePlayer(gameId: GameId, userId: UserId) {
   return false;
 }
 
+export async function cancelGame(gameId: GameId, canceledBy: UserId) {
+  const game = gamesById.get(gameId);
+  if (game && game.host === canceledBy) {
+    game.status = "canceled";
+    return game;
+  }
+
+  return false;
+}
+
 export async function getLobbyGames(): Promise<IGame[]> {
   const games = Array.from(gamesById.values());
   return games.filter(game => game.status === "not_started");
