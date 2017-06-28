@@ -46,7 +46,7 @@ router.get(
 <head>
   <meta charset="utf-8">
   <title>Gamesite 3</title>
-
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
   ${userTag}
   <script src="//localhost:8080/scripts/bundle.js" defer></script>
 </head>
