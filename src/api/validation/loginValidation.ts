@@ -1,5 +1,5 @@
 import { Context } from "koa";
-import { IUser, toPublicUserData } from "../../db/users";
+import { IUser, toPrivateUserData } from "../../db/users";
 
 interface IUserDb {
   getUserByEmail(email: string): Promise<IUser | undefined>;
@@ -18,7 +18,7 @@ export default function(userDb: IUserDb) {
       // TODO: hashed passwords
       ctx.status = 401;
     } else {
-      ctx.state.user = toPublicUserData(user);
+      ctx.state.user = toPrivateUserData(user);
       await next();
     }
   };

@@ -16,6 +16,12 @@ export interface IPublicUserData {
   username: Username;
 }
 
+export interface IPrivateUserData {
+  email: Email;
+  id: UserId;
+  username: Username;
+}
+
 const qwer = {
   email: "qwer@qwer.com",
   id: "qwer-id",
@@ -52,7 +58,11 @@ interface IAddUserData {
   email: Email;
   password: string;
 }
-export async function addUser({ username, email, password }: IAddUserData) {
+export async function addUser({
+  username,
+  email,
+  password,
+}: IAddUserData): Promise<IUser> {
   const id = shortid.generate();
   const user = {
     email,
@@ -65,7 +75,7 @@ export async function addUser({ username, email, password }: IAddUserData) {
   usersByEmail.set(email, user);
   usersByName.set(username, user);
 
-  return { id };
+  return user;
 }
 
 export async function getUserById(id: UserId) {
@@ -84,6 +94,14 @@ export async function getUserByEmail(email: Email) {
 
 export function toPublicUserData(user: IUser): IPublicUserData {
   return {
+    id: user.id,
+    username: user.username,
+  };
+}
+
+export function toPrivateUserData(user: IUser): IPrivateUserData {
+  return {
+    email: user.email,
     id: user.id,
     username: user.username,
   };

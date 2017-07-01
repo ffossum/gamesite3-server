@@ -1,4 +1,5 @@
 import { Context } from "koa";
+import { toPrivateUserData } from "../db/users";
 import { signJwt } from "../util/jwt";
 
 const JWT_COOKIE = "jwt";
@@ -11,16 +12,9 @@ function getExpirationDate() {
 export function refreshJwtCookie(jwtSecret: string) {
   return async (ctx: Context, next: () => Promise<any>) => {
     if (ctx.state.user) {
-      const jwt = await signJwt(
-        {
-          id: ctx.state.user.id,
-          username: ctx.state.user.username,
-        },
-        jwtSecret,
-        {
-          expiresIn: "7d",
-        },
-      );
+      const jwt = await signJwt(toPrivateUserData(ctx.state.user), jwtSecret, {
+        expiresIn: "7d",
+      });
 
       ctx.cookies.set(JWT_COOKIE, jwt, {
         expires: getExpirationDate(),

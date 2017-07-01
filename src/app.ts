@@ -3,6 +3,7 @@ import * as jwt from "koa-jwt";
 import * as Router from "koa-router";
 import apiRouter from "./api/apiRouter";
 import { expireJwtCookie } from "./api/jwtCookie";
+import { toPrivateUserData } from "./db/users";
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -31,10 +32,7 @@ router.get(
   "*",
   jwt({ secret: jwtSecret, cookie: "jwt", passthrough: true }),
   (ctx: Koa.Context) => {
-    const user = ctx.state.user && {
-      id: ctx.state.user.id,
-      username: ctx.state.user.username,
-    };
+    const user = ctx.state.user && toPrivateUserData(ctx.state.user);
 
     const userTag = user
       ? `<script defer>window.__USER__ = ${JSON.stringify(user)};</script>`

@@ -39,19 +39,13 @@ apiRouter.post(
   registrationValidation(),
   recaptcha(process.env.RECAPTCHA_SECRET),
   async (ctx, next) => {
-    const { id } = await userDb.addUser(ctx.request.body);
-    ctx.state.user = {
-      id,
-      username: ctx.request.body.username,
-    };
+    const user = await userDb.addUser(ctx.request.body);
+    ctx.state.user = userDb.toPrivateUserData(user);
     await next();
   },
   refreshJwtCookie(jwtSecret),
   ctx => {
-    ctx.body = {
-      id: ctx.state.user.id,
-      username: ctx.state.user.username,
-    };
+    ctx.body = ctx.state.user;
     ctx.status = 201;
   },
 );
@@ -62,10 +56,7 @@ apiRouter.post(
   loginValidation(userDb),
   refreshJwtCookie(jwtSecret),
   ctx => {
-    ctx.body = {
-      id: ctx.state.user.id,
-      username: ctx.state.user.username,
-    };
+    ctx.body = ctx.state.user;
     ctx.status = 200;
   },
 );
