@@ -69,3 +69,11 @@ export async function getLobbyGames(): Promise<IGame[]> {
   const games = Array.from(gamesById.values());
   return games.filter(game => game.status === "not_started");
 }
+
+export async function startGame(gameId: GameId, startedBy: UserId) {
+  const game = gamesById.get(gameId);
+  if (game && game.host === startedBy) {
+    game.status = "started";
+    return game;
+  }
+}

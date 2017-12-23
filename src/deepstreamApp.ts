@@ -3,6 +3,7 @@ import {
   addPlayer,
   cancelGame,
   createGame,
+  startGame,
   getLobbyGames,
   removePlayer,
 } from "./db/games";
@@ -118,6 +119,36 @@ export default function(client: deepstreamIO.Client) {
             gid: gameId,
           },
           t: "game-canceled",
+        });
+      });
+    }
+  });
+
+  client.rpc.provide("start-game", async (data, response) => {
+    const gameId = data.gid;
+    const startedBy = data.uid;
+
+    const game = await startGame(gameId, startedBy);
+    if (game) {
+      client.event.emit("lobby", {
+        p: {
+          id: gameId,
+          status: game.status,
+        },
+        t: "game-updated",
+      });
+
+      const channels = [
+        ...game.players.map(playerId => "user:" + playerId),
+        "spectate:" + gameId,
+      ];
+
+      channels.forEach(channelName => {
+        client.event.emit(channelName, {
+          p: {
+            gid: gameId,
+          },
+          t: "game-started",
         });
       });
     }
