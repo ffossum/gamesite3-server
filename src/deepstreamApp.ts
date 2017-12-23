@@ -3,9 +3,9 @@ import {
   addPlayer,
   cancelGame,
   createGame,
-  startGame,
   getLobbyGames,
   removePlayer,
+  startGame,
 } from "./db/games";
 
 export default function(client: deepstreamIO.Client) {
